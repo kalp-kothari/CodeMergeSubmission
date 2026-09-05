@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router';
 import { CheckCircle2 } from 'lucide-react';
 import { getSubmission } from '../services/submission';
-import type { SubmissionDetail } from '../types';
+import type { PublicSubmissionDetail } from '../types';
 
 export function SuccessPage() {
   const { submissionId } = useParams<{ submissionId: string }>();
-  const [submission, setSubmission] = useState<SubmissionDetail | null>(null);
+const [submission, setSubmission] = useState<PublicSubmissionDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

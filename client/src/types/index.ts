@@ -62,3 +62,10 @@ export interface PaginatedSubmissions {
   limit: number;
   totalPages: number;
 }
+
+export interface PublicSubmissionDetail {
+  submissionId: string;
+  teamName: string;
+  submittedAt: string;
+  status: string;
+}

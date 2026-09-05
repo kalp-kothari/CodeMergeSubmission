@@ -1,5 +1,5 @@
 import api from './api';
-import type { Team, SubmissionResponse, SubmissionDetail } from '../types';
+import type { Team, SubmissionResponse, PublicSubmissionDetail } from '../types';
 
 export async function getTeams(): Promise<Team[]> {
   const { data } = await api.get('/teams');
@@ -13,7 +13,7 @@ export async function submitForm(formData: FormData): Promise<SubmissionResponse
   return data;
 }
 
-export async function getSubmission(submissionId: string): Promise<SubmissionDetail> {
-  const { data } = await api.get(`/submissions/${submissionId}`);
+export async function getSubmission(submissionId: string): Promise<PublicSubmissionDetail> {
+	const { data } = await api.get(`/submissions/${submissionId}`);
   return data;
 }
