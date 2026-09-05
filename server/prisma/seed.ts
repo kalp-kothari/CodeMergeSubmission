@@ -36,11 +36,10 @@ async function main() {
       allowedFileTypes: ['pdf', 'pptx'],
       maxFileSize: 10 * 1024 * 1024, // 10 MB
       domains: [
-        'Web Development',
-        'Artificial Intelligence / Machine Learning',
-        'Cybersecurity',
-        'Blockchain',
-        'Other',
+        "AI for EDTECH/FINTECH/HEALTHTECH",
+  "AI FOR SUSTAINABILITY",
+  "AI + IOT",
+  "AI FOR SAFETY & SECURITY"
       ],
     },
   });

@@ -52,6 +52,7 @@ model Team {
   eventId     String       @map("event_id")
   event       Event        @relation(fields: [eventId], references: [id])
   teamName    String       @map("team_name")
+  leaderEmail String?      @map("leader_email")
   isEligible  Boolean      @default(true) @map("is_eligible")
   submissions Submission[]
   createdAt   DateTime     @default(now()) @map("created_at")

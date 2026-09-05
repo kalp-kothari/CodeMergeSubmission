@@ -9,6 +9,7 @@ import { FileUpload } from '../components/forms/FileUpload';
 import { CharacterCounter } from '../components/forms/CharacterCounter';
 import { fullSubmissionSchema, type FullSubmissionData } from '../schemas/submission.schema';
 import { getTeams, submitForm } from '../services/submission';
+import api from '../services/api';
 import type { Team } from '../types';
 
 const steps = ['Instructions', 'Team Details', 'Submission', 'Review'];
@@ -21,6 +22,8 @@ export function SubmissionFlow() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [confirmChecked, setConfirmChecked] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+const [teamVerified, setTeamVerified] = useState(false);
 
   const methods = useForm<FullSubmissionData>({
     resolver: zodResolver(fullSubmissionSchema),
@@ -48,10 +51,40 @@ export function SubmissionFlow() {
     }
 
     if (currentStep === 2) {
-      const isValid = await trigger(['teamId', 'leaderEmail', 'leaderContact']);
-      if (isValid) setCurrentStep(3);
-      return;
+  const isValid = await trigger(['teamId', 'leaderEmail', 'leaderContact']);
+
+  if (!isValid) return;
+
+  setIsVerifying(true);
+  setSubmitError('');
+
+  try {
+    const { teamId, leaderEmail } = getValues();
+
+    const response = await api.post('/teams/verify', {
+      teamId,
+      leaderEmail,
+    });
+
+    if (response.data.verified) {
+      setTeamVerified(true);
+      setCurrentStep(3);
+    } else {
+      setTeamVerified(false);
+      setSubmitError('Team details could not be verified. Please check your details or contact an admin.');
     }
+  } catch (err: any) {
+    setTeamVerified(false);
+    setSubmitError(
+      err.response?.data?.error ||
+      'Team details could not be verified. Please check your details or contact an admin.'
+    );
+  } finally {
+    setIsVerifying(false);
+  }
+
+  return;
+}
 
     if (currentStep === 3) {
       const isValid = await trigger(['domain', 'problemStatement', 'solutionSummary']);
@@ -117,8 +150,11 @@ export function SubmissionFlow() {
               <TeamSelector
                 teams={teams}
                 value={watch('teamId')}
-                onChange={(val) => setValue('teamId', val, { shouldValidate: true })}
-                error={errors.teamId?.message}
+onChange={(val) => {
+  setValue('teamId', val, { shouldValidate: true });
+  setTeamVerified(false);
+  setSubmitError('');
+}}                error={errors.teamId?.message}
               />
               {watch('teamId') && (
                 <p className="text-sm text-green-500 flex items-center">
@@ -133,11 +169,24 @@ export function SubmissionFlow() {
                 <label className="block text-sm font-medium text-gray-300 mb-1">Leader Email</label>
                 <input
                   type="email"
-                  {...register('leaderEmail')}
+                  {...register('leaderEmail', {
+  onChange: () => {
+    setTeamVerified(false);
+    setSubmitError('');
+  },
+})}
                   className={`w-full bg-gray-800 border ${errors.leaderEmail ? 'border-red-500' : 'border-gray-700'} rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-brand-500 outline-none`}
                   placeholder="leader@example.com"
                 />
                 {errors.leaderEmail && <p className="mt-1 text-sm text-red-500">{errors.leaderEmail.message}</p>}
+				{teamVerified && (
+  <p className="mt-1 text-sm text-green-500 flex items-center">
+    <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+    </svg>
+    Team details verified successfully.
+  </p>
+)}
               </div>
 
               <div>
@@ -305,12 +354,13 @@ AI for EDTECH/FINTECH/HEALTHTECH
             )}
 
             {currentStep < 4 ? (
-              <button
-                onClick={handleNext}
-                className="px-6 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition-colors"
-              >
-                Next →
-              </button>
+             <button
+  onClick={handleNext}
+  disabled={isVerifying}
+  className="px-6 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  {isVerifying ? 'Verifying...' : 'Next →'}
+</button>
             ) : (
               <button
                 onClick={onSubmit}

@@ -26,10 +26,21 @@ export const create = async (req: Request, res: Response, next: NextFunction): P
       return res.status(400).json({ error: 'Invalid file content.' });
     }
 
-    const team = await validateTeam(teamId, round.eventId);
-    await checkDuplicate(teamId, round.id);
+const team = await validateTeam(teamId, round.eventId);
 
-    const result = await doCreateSubmission({
+// Verify that the submitted leader email belongs to this team
+if (
+  !team.leaderEmail ||
+  team.leaderEmail.trim().toLowerCase() !== leaderEmail.trim().toLowerCase()
+) {
+  return res.status(403).json({
+    error: 'Team details could not be verified. Please check your details or contact an admin.',
+  });
+}
+
+await checkDuplicate(teamId, round.id);
+
+const result = await doCreateSubmission({
       roundId: round.id,
       teamId: team.id,
       teamName: team.teamName,
