@@ -48,7 +48,7 @@ export const listSubmissions = async (req: Request, res: Response, next: NextFun
 export const getSubmissionById = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
     const submission = await prisma.submission.findUnique({
-      where: { id: req.params.id },
+		where: { id: req.params.id as string },
       include: { team: true }
     });
 
@@ -65,7 +65,7 @@ export const getSubmissionById = async (req: Request, res: Response, next: NextF
 export const downloadFile = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
     const submission = await prisma.submission.findUnique({
-      where: { id: req.params.id }
+      where: { id: req.params.id as string }
     });
 
     if (!submission) {
@@ -83,7 +83,7 @@ export const updateStatus = async (req: Request, res: Response, next: NextFuncti
   try {
     const { status } = statusUpdateSchema.parse(req.body);
     const submission = await prisma.submission.update({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       data: { status }
     });
     res.json(submission);

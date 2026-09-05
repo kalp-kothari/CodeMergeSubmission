@@ -59,7 +59,7 @@ export const create = async (req: Request, res: Response, next: NextFunction): P
 
 export const getBySubmissionId = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
-    const { submissionId } = req.params;
+    const submissionId = req.params.submissionId as string;
     const submission = await prisma.submission.findFirst({
       where: { submissionId },
       include: { team: true }
