@@ -165,12 +165,18 @@ export function SubmissionFlow() {
                   {...register('domain')}
                   className={`w-full bg-gray-800 border ${errors.domain ? 'border-red-500' : 'border-gray-700'} rounded-lg p-3 text-gray-100 focus:ring-2 focus:ring-brand-500 outline-none appearance-none`}
                 >
-                  <option value="">Select a domain</option>
-                  <option value="Web Development">Web Development</option>
-                  <option value="Artificial Intelligence / Machine Learning">Artificial Intelligence / Machine Learning</option>
-                  <option value="Cybersecurity">Cybersecurity</option>
-                  <option value="Blockchain">Blockchain</option>
-                  <option value="Other">Other</option>
+                  <option value="AI for EDTECH/FINTECH/HEALTHTECH">
+AI for EDTECH/FINTECH/HEALTHTECH
+</option>
+<option value="AI FOR SUSTAINABILITY">
+  AI FOR SUSTAINABILITY
+</option>
+<option value="AI + IOT">
+  AI + IOT
+</option>
+<option value="AI FOR SAFETY & SECURITY">
+  AI FOR SAFETY & SECURITY
+</option>
                 </select>
                 {errors.domain && <p className="mt-1 text-sm text-red-500">{errors.domain.message}</p>}
               </div>

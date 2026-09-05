@@ -124,11 +124,18 @@ export function DashboardPage() {
             </div>
             <select className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 outline-none" value={domain} onChange={(e) => { setDomain(e.target.value); setPage(1); }}>
               <option value="">All Domains</option>
-              <option value="Web Development">Web Dev</option>
-              <option value="Artificial Intelligence / Machine Learning">AI/ML</option>
-              <option value="Cybersecurity">Cybersecurity</option>
-              <option value="Blockchain">Blockchain</option>
-              <option value="Other">Other</option>
+<option value="AI for EDTECH/FINTECH/HEALTHTECH">
+  AI for EDTECH/FINTECH/HEALTHTECH
+</option>
+<option value="AI FOR SUSTAINABILITY">
+  AI FOR SUSTAINABILITY
+</option>
+<option value="AI + IOT">
+  AI + IOT
+</option>
+<option value="AI FOR SAFETY & SECURITY">
+  AI FOR SAFETY & SECURITY
+</option>
             </select>
             <select className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 outline-none" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
               <option value="">All Statuses</option>
