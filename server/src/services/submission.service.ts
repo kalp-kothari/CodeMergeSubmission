@@ -99,8 +99,14 @@ export const createSubmission = async (data: {
   fileSize: number;
   fileBuffer: Buffer;
 }) => {
-  let seq = await prisma.submission.count({ where: { roundId: data.roundId } }) + 1;
-  const submissionId = generateSubmissionId(seq);
+  const lastSubmission = await prisma.submission.findFirst({
+  where: { roundId: data.roundId },
+  orderBy: { sequenceNumber: 'desc' },
+  select: { sequenceNumber: true }
+});
+
+const seq = (lastSubmission?.sequenceNumber ?? 0) + 1;
+const submissionId = generateSubmissionId(seq);
 const extension = data.fileType === 'pdf' ? 'pdf' : 'pptx';
 const storagePath = `codemerge-v2/round-1/${submissionId}/presentation.${extension}`;
 
