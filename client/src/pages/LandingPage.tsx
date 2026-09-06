@@ -8,7 +8,7 @@ export function LandingPage() {
 
   useEffect(() => {
     // Hardcoded deadline: 06 September 2026 — 09:00 PM IST
-    const deadline = new Date('2026-09-06T21:00:00+05:30');
+    const deadline = new Date('2026-09-06T23:30:00+05:30');
     if (new Date() > deadline) {
       setIsClosed(true);
       navigate('/closed');

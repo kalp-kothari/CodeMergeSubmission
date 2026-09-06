@@ -12,7 +12,7 @@ export function ClosedPage() {
           The deadline for CodeMerge V2.0 PPT Round 1 has passed.
         </p>
         <p className="text-gray-500 mb-8 font-medium">
-          Deadline: 06 September 2026 — 09:00 PM IST
+          Deadline: 06 September 2026 — 11:00 PM IST
         </p>
         
         <Link
