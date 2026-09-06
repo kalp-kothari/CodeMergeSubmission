@@ -1,11 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { supabase } from '../config/supabase';
+import { supabaseAuth } from '../config/supabase';
 import { loginSchema } from '../schemas/auth.schema';
 
 export const login = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
     const { email, password } = loginSchema.parse(req.body);
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabaseAuth.auth.signInWithPassword({
+  email,
+  password
+});
 
     if (error) {
       return res.status(401).json({ error: 'Invalid email or password' });
